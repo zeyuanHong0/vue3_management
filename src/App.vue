@@ -7,6 +7,7 @@
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
+  1
 </template>
 
 <script setup lang="ts"></script>
