@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 const request = axios.create({
-  baseURL: import.meta.env.VITE_BASE_API as string,
+  baseURL: import.meta.env.VITE_APP_BASE_API as string,
   timeout: 5000,
 })
 

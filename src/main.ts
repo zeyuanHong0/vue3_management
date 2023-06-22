@@ -10,16 +10,6 @@ import 'virtual:svg-icons-register'
 // 全局组件
 import gloablComponent from './components/index'
 
-import axios from 'axios'
-axios({
-  url: '/api/user/login',
-  method: 'post',
-  data: {
-    username: 'admin',
-    password: '111111',
-  },
-})
-
 const app = createApp(App)
 app
   .use(ElementPlus)
