@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -12,6 +13,7 @@ import gloablComponent from './components/index'
 
 const app = createApp(App)
 app
+  .use(router)
   .use(ElementPlus)
   .use(ElementPlus, {
     locale: zhCn,
