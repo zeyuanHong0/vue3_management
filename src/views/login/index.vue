@@ -1,5 +1,5 @@
 <template>
-  <div>登录页面</div>
+  <div class="login_container"></div>
 </template>
 
 <script lang="ts">
