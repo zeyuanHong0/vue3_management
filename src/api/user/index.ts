@@ -7,11 +7,11 @@ enum API {
 }
 
 // 登录接口
-export const reqLogin = (data: loginForm) => {
+export const fetchLogin = (data: loginForm) => {
   return request.post<any, loginRes>(API.LOGIN_URL, data)
 }
 
 // 获取用户信息
-export const reqUserInfo = () => {
+export const fetchUserInfo = () => {
   return request.get<any, userInfoRes>(API.USERINFO_URL)
 }

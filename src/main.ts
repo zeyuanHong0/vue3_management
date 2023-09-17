@@ -11,6 +11,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'virtual:svg-icons-register'
 // 全局组件
 import gloablComponent from './components/index'
+import pinia from './store'
 
 const app = createApp(App)
 app
@@ -20,4 +21,5 @@ app
     locale: zhCn,
   })
   .use(gloablComponent)
+  .use(pinia)
   .mount('#app')
