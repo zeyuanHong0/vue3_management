@@ -4,4 +4,26 @@
   background: url('@/assets/images/background.jpg') no-repeat;
   background-size: cover;
   padding: 40px;
+
+  .login_form{
+    position: relative;
+    width: 80%;
+    top: 30vh;
+    padding: 40px;
+    background: url("@/assets/images/login_form.png") no-repeat;
+    background-size: cover;
+
+    h1{
+      color: #fff;
+      font-size: 40px;
+    }
+    h2{
+      margin: 10px 0 10px 0;
+      color: #fff;
+      font-size: 20px;
+    }
+    .login_button{
+      width: 100%;
+    }
+  }
 }
