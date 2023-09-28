@@ -2,19 +2,23 @@ import { defineStore } from 'pinia'
 // import { ElMessage } from 'element-plus'
 import { fetchLogin } from '@/api/user/index'
 import type { loginForm, loginRes } from '@/api/user/type'
+import { UserState } from './types/types'
+import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+
 export const useUserStore = defineStore('User', {
-  state: () => {
+  state: (): UserState => {
     return {
-      token: sessionStorage.getItem('token') || '',
+      token: GET_TOKEN(),
     }
   },
   // 处理异步操作
   actions: {
     async userLogin(data: loginForm) {
       try {
-        const res = await fetchLogin(data)
+        const res: loginRes = await fetchLogin(data)
         if (res.code === 200) {
-          sessionStorage.setItem('token', res.data.token)
+          this.token = res.data.token as string
+          SET_TOKEN(res.data.token as string)
           return 'is login'
         } else {
           return Promise.reject(res)
