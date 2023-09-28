@@ -56,6 +56,7 @@ import { useRouter } from 'vue-router'
 import { User, Lock } from '@element-plus/icons-vue'
 import { ElMessage, ElNotification } from 'element-plus'
 import { useUserStore } from '@/store/modules/user'
+import { getTime } from '@/utils/getTime'
 const userStore = useUserStore()
 const router = useRouter()
 
@@ -81,7 +82,14 @@ const handleSubmit = async () => {
       username: username.value,
       password: password.value,
     })
+    // 获取当前时间
+    const time = getTime()
     router.push('/')
+    ElNotification({
+      title: `Hi,${time}好`,
+      message: `欢迎回来`,
+      type: 'success',
+    })
   } catch (error) {
     ElNotification({
       title: '账号或者密码不正确',
