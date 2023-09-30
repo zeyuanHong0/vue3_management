@@ -6,23 +6,28 @@
       <!-- 右侧 -->
       <el-col :span="12" :xs="24">
         <!-- 表单 -->
-        <el-form class="login_form">
+        <el-form
+          class="login_form"
+          ref="ruleFormRef"
+          :model="loginForm"
+          :rules="rules"
+        >
           <h1>Hello</h1>
           <h2>欢迎来到哲理源甄选</h2>
           <!-- 用户名 -->
-          <el-form-item>
+          <el-form-item prop="username">
             <el-input
               :prefix-icon="User"
-              v-model="username"
+              v-model="loginForm.username"
               placeholder="请输入用户名"
               @keyup.enter="handleSubmit"
             ></el-input>
           </el-form-item>
           <!-- 密码 -->
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input
               :prefix-icon="Lock"
-              v-model="password"
+              v-model="loginForm.password"
               placeholder="请输入密码"
               type="password"
               show-password
@@ -51,36 +56,66 @@ export default { name: 'login' }
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { User, Lock } from '@element-plus/icons-vue'
-import { ElMessage, ElNotification } from 'element-plus'
+import { ElNotification } from 'element-plus'
+import type { FormInstance } from 'element-plus'
 import { useUserStore } from '@/store/modules/user'
 import { getTime } from '@/utils/getTime'
 const userStore = useUserStore()
 const router = useRouter()
 
-const username = ref<string>('')
-const password = ref<string>('')
+interface ILoginForm {
+  username: string
+  password: string
+}
+
+const loginForm = reactive<ILoginForm>({
+  username: '',
+  password: '',
+})
 const loading = ref<boolean>(false)
+const ruleFormRef = ref<FormInstance>() // 表单ref
+
+// 定义校验规则
+const validateName = async (_rule: any, value: any, callback: any) => {
+  // 必填，且长度不小于5个字符
+  if (!value) {
+    callback(new Error('请输入用户名'))
+  } else if (value.length < 5) {
+    callback(new Error('用户名长度至少为 5 个字符'))
+  } else {
+    callback()
+  }
+}
+
+const validatePassword = async (_rule: any, value: any, callback: any) => {
+  // 不小于6个字符
+  if (!value) {
+    callback(new Error('请输入密码'))
+  } else if (value.length < 6) {
+    callback(new Error('密码长度至少为 6 个字符'))
+  } else {
+    callback()
+  }
+}
+
+const rules = {
+  username: [{ validator: validateName, trigger: 'change' }],
+  password: [{ validator: validatePassword, trigger: 'change' }],
+}
 
 // 登录
 const handleSubmit = async () => {
   // 校验
-  if (!username.value) {
-    ElMessage.error('请输入用户名')
-    return
-  }
-  if (!password.value) {
-    ElMessage.error('请输入密码')
-    return
-  }
+  await ruleFormRef.value?.validate()
   // 登录
   try {
     loading.value = true
     await userStore.userLogin({
-      username: username.value,
-      password: password.value,
+      username: loginForm.username,
+      password: loginForm.password,
     })
     // 获取当前时间
     const time = getTime()
