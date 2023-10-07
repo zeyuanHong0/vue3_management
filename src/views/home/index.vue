@@ -1,7 +1,10 @@
 <template>
   <div class="layout_container">
     <!-- 左侧菜单栏 -->
-    <div class="layout_menu">菜单栏</div>
+    <div class="layout_menu">
+      <!-- logo -->
+      <logo />
+    </div>
     <!-- 顶部 haeder -->
     <div class="layout_tabbar">顶部</div>
     <!-- 右侧内容 -->
@@ -15,6 +18,7 @@ export default { name: 'home' }
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
+import logo from './logo/index.vue'
 </script>
 <style lang="scss" scoped>
 @import './scss/index.scss';
