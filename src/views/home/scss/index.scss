@@ -6,6 +6,16 @@
     width: $base-menu-width;
     height: 100vh;
     background: $base-menu-background;
+    color: #fff;
+
+    .scrollbar {
+      width: 100%;
+      height: calc(100vh - #{$base-menu-logo-height});
+
+      .my_el_menu{
+        
+      }
+    }
   }
   .layout_tabbar {
     position: fixed;
