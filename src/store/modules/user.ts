@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 // import { ElMessage } from 'element-plus'
 import { fetchLogin } from '@/api/user/index'
 import type { loginForm, loginRes } from '@/api/user/type'
+import { constantRoute } from '@/router/routes'
 import { UserState } from './types/types'
 import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
 
@@ -9,6 +10,7 @@ export const useUserStore = defineStore('User', {
   state: (): UserState => {
     return {
       token: GET_TOKEN(),
+      menuRoutes: constantRoute, //仓库存储生成菜单需要的数组
     }
   },
   // 处理异步操作

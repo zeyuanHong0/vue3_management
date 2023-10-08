@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-export default { name: '' }
+export default { name: 'logo' }
 </script>
 
 <script setup lang="ts"></script>

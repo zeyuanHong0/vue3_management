@@ -3,7 +3,7 @@
     <!-- 左侧菜单栏 -->
     <div class="layout_menu">
       <!-- logo -->
-      <logo />
+      <Logo />
       <!-- 菜单内容 -->
       <el-scrollbar class="scrollbar">
         <el-menu
@@ -14,18 +14,8 @@
           mode="vertical"
           @select="handleSelect"
         >
-          <el-menu-item index="1">首页</el-menu-item>
-          <el-menu-item index="2">数据大屏</el-menu-item>
-          <!-- 折叠菜单 -->
-          <el-sub-menu index="3">
-            <template #title>
-              <i class="el-icon-location"></i>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item index="3-1">用户管理</el-menu-item>
-            <el-menu-item index="3-2">角色管理</el-menu-item>
-            <el-menu-item index="3-3">菜单管理</el-menu-item>
-          </el-sub-menu>
+          <!-- 根据路由动态生成菜单 -->
+          <Menu :menuList="userStore.menuRoutes" />
         </el-menu>
       </el-scrollbar>
     </div>
@@ -43,7 +33,11 @@ export default { name: 'home' }
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 
-import logo from './logo/index.vue'
+import Logo from './logo/index.vue'
+import Menu from './menu/index.vue'
+import { useUserStore } from '@/store/modules/user'
+
+const userStore = useUserStore()
 </script>
 <style lang="scss" scoped>
 @import './scss/index.scss';
