@@ -2,8 +2,9 @@ export const constantRoute = [
   // 首页
   {
     path: '/',
-    name: 'layout',
+    name: 'Layout',
     component: () => import('@/views/layout/index.vue'),
+    redirect: '/home',
     meta: {
       title: 'layout',
       hidden: false,
@@ -12,8 +13,8 @@ export const constantRoute = [
     children: [
       {
         path: '/home',
-        name: 'home',
-        component: () => import('@/views/home/index.vue'),
+        name: 'Home',
+        // component: () => import('@/views/home/index.vue'),
         meta: {
           title: '首页',
           hidden: false,
@@ -24,12 +25,22 @@ export const constantRoute = [
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: () => import('@/views/login/index.vue'),
     meta: {
       title: '登录',
       hidden: true,
       icon: 'Promotion',
+    },
+  },
+  {
+    path: '/screen',
+    name: 'Screen',
+    component: () => import('@/views/screen/index.vue'),
+    meta: {
+      title: '数据大屏',
+      hidden: false,
+      icon: 'DataAnalysis',
     },
   },
   {

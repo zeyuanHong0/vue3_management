@@ -3,7 +3,7 @@
     <!-- 图标 -->
     <img src="../../../../public/Logo.JPG" alt="logo" />
     <!-- 文字 -->
-    <p>哲理源甄选平台</p>
+    <p>哲理源后台管理</p>
   </div>
 </template>
 
