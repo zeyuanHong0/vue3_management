@@ -7,7 +7,7 @@
       <!-- 菜单内容 -->
       <el-scrollbar class="scrollbar">
         <el-menu
-          :default-active="activeIndex"
+          :default-active="$route.path"
           class="my_el_menu"
           background-color="#001529"
           text-color="white"
@@ -33,13 +33,15 @@ export default { name: 'home' }
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+// import { ref, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
 import Main from './main/index.vue'
 import { useUserStore } from '@/store/modules/user'
 
+const $route = useRoute() // 通过 useRoute() 获取当前路由信息
 const userStore = useUserStore()
 </script>
 <style lang="scss" scoped>
