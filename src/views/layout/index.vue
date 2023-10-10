@@ -22,7 +22,9 @@
     <!-- 顶部 haeder -->
     <div class="layout_tabbar">顶部</div>
     <!-- 右侧内容 -->
-    <div class="layout_content">内容</div>
+    <div class="layout_content">
+      <Main />
+    </div>
   </div>
 </template>
 
@@ -35,6 +37,7 @@ import { ref, onMounted, watch } from 'vue'
 
 import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
+import Main from './main/index.vue'
 import { useUserStore } from '@/store/modules/user'
 
 const userStore = useUserStore()
