@@ -20,7 +20,9 @@
       </el-scrollbar>
     </div>
     <!-- 顶部 haeder -->
-    <div class="layout_tabbar">顶部</div>
+    <div class="layout_tabbar">
+      <Tabbar />
+    </div>
     <!-- 右侧内容 -->
     <div class="layout_content">
       <Main />
@@ -38,6 +40,7 @@ import { useRoute } from 'vue-router'
 
 import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
+import Tabbar from './tabbar/index.vue'
 import Main from './main/index.vue'
 import { useUserStore } from '@/store/modules/user'
 

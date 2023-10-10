@@ -1,0 +1,32 @@
+.tabbar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  background: rgb(247, 245, 245);
+  // 左侧
+  ._left {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+
+    :nth-child(1) {
+      margin-left: 5px;
+    }
+  }
+
+  // 右侧
+  ._right {
+    display: flex;
+    align-items: center;
+    img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin: 0 10px;
+    }
+    .el-dropdown{
+      margin-right: 10px;
+    }
+  }
+}
