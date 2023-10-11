@@ -2,8 +2,8 @@
   <div class="tabbar">
     <div class="_left">
       <!-- 图标 -->
-      <el-icon :size="20">
-        <Expand></Expand>
+      <el-icon :size="20" @click="changeIcon">
+        <component :is="isFold ? 'Fold' : 'Expand'"></component>
       </el-icon>
       <!-- 面包屑 -->
       <el-breadcrumb :separator-icon="ArrowRight">
@@ -37,12 +37,19 @@
 </template>
 
 <script lang="ts">
-export default { name: '' }
+export default { name: 'Tabbar' }
 </script>
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { ArrowRight } from '@element-plus/icons-vue'
+
+const isFold = ref<boolean>(false)
+
+// 切换图标
+const changeIcon = () => {
+  isFold.value = !isFold.value
+}
 </script>
 <style lang="scss" scoped>
 @import './scss/index.scss';

@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-export default { name: '' }
+export default { name: 'Main_Content' }
 </script>
 
 <script setup lang="ts">
