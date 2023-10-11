@@ -3,7 +3,7 @@
     <div class="_left">
       <!-- 图标 -->
       <el-icon :size="20" @click="changeIcon">
-        <component :is="isFold ? 'Fold' : 'Expand'"></component>
+        <component :is="settingStore.isFold ? 'Fold' : 'Expand'"></component>
       </el-icon>
       <!-- 面包屑 -->
       <el-breadcrumb :separator-icon="ArrowRight">
@@ -43,12 +43,13 @@ export default { name: 'Tabbar' }
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { ArrowRight } from '@element-plus/icons-vue'
+import { useSettingsStore } from '@/store/modules/settings'
 
-const isFold = ref<boolean>(false)
+const settingStore = useSettingsStore() // 获取设置 store
 
 // 切换图标
 const changeIcon = () => {
-  isFold.value = !isFold.value
+  settingStore.isFold = !settingStore.isFold
 }
 </script>
 <style lang="scss" scoped>

@@ -4,3 +4,7 @@ export interface UserState {
   token: string | null
   menuRoutes: RouteRecordRaw[]
 }
+
+export interface SettingsState {
+  isFold: boolean
+}

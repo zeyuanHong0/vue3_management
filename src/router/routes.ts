@@ -6,9 +6,9 @@ export const constantRoute = [
     component: () => import('@/views/layout/index.vue'),
     redirect: '/home',
     meta: {
-      title: 'layout',
+      title: '',
       hidden: false,
-      icon: 'Avatar',
+      icon: '',
     },
     children: [
       {

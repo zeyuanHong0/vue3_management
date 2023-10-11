@@ -1,5 +1,4 @@
 <template>
-  <!-- <div>{{ props.menuList }}</div> -->
   <template v-for="(item, index) in menuList" :key="item.path">
     <!-- 没有子路由的菜单展示 -->
     <template v-if="!item.children">
@@ -8,11 +7,11 @@
         :index="item.path"
         @click="handleToRoute"
       >
+        <el-icon>
+          <!-- 渲染动态组件 -->
+          <component :is="item.meta.icon"></component>
+        </el-icon>
         <template #title>
-          <el-icon>
-            <!-- 渲染动态组件 -->
-            <component :is="item.meta.icon"></component>
-          </el-icon>
           <span>{{ item.meta.title }}</span>
         </template>
       </el-menu-item>
@@ -25,10 +24,10 @@
         :index="item.children[0].path"
         @click="handleToRoute"
       >
+        <el-icon>
+          <component :is="item.children[0].meta.icon"></component>
+        </el-icon>
         <template #title>
-          <el-icon>
-            <component :is="item.children[0].meta.icon"></component>
-          </el-icon>
           <span>{{ item.children[0].meta.title }}</span>
         </template>
       </el-menu-item>
