@@ -32,7 +32,12 @@
         circle
         @click="changeRefreshState"
       />
-      <el-button size="small" icon="FullScreen" circle />
+      <el-button
+        size="small"
+        icon="FullScreen"
+        circle
+        @click="changeFullScreen"
+      />
       <el-button size="small" icon="Setting" circle />
       <!-- 用户头像 -->
       <img src="../../../../public/Logo.JPG" alt="" />
@@ -76,6 +81,16 @@ const changeIcon = () => {
 // 刷新
 const changeRefreshState = () => {
   settingStore.isRefresh = !settingStore.isRefresh
+}
+
+// 实现全屏
+const changeFullScreen = () => {
+  const isFullScreen = document.fullscreenElement
+  if (isFullScreen) {
+    document.exitFullscreen()
+  } else {
+    document.documentElement.requestFullscreen()
+  }
 }
 </script>
 <style lang="scss" scoped>
