@@ -7,4 +7,5 @@ export interface UserState {
 
 export interface SettingsState {
   isFold: boolean
+  isRefresh: boolean
 }

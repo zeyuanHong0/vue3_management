@@ -10,7 +10,7 @@
         <el-breadcrumb-item
           v-for="item in $route.matched"
           :key="item.path"
-          :to="{ path: item.path }"
+          :to="item.path"
           v-show="item.meta.title"
         >
           <!-- 图标 -->
@@ -26,7 +26,12 @@
     </div>
     <div class="_right">
       <!-- 按钮 -->
-      <el-button size="small" icon="Refresh" circle />
+      <el-button
+        size="small"
+        icon="Refresh"
+        circle
+        @click="changeRefreshState"
+      />
       <el-button size="small" icon="FullScreen" circle />
       <el-button size="small" icon="Setting" circle />
       <!-- 用户头像 -->
@@ -66,6 +71,11 @@ const settingStore = useSettingsStore() // 获取设置 store
 // 切换图标
 const changeIcon = () => {
   settingStore.isFold = !settingStore.isFold
+}
+
+// 刷新
+const changeRefreshState = () => {
+  settingStore.isRefresh = !settingStore.isRefresh
 }
 </script>
 <style lang="scss" scoped>

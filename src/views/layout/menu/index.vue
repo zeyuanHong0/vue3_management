@@ -68,9 +68,11 @@ const props = defineProps({
 
 // 点击菜单的事件
 const handleToRoute = (vc: any) => {
-  // console.log(e)
+  console.log(vc)
   // 路由跳转
-  router.push(vc.index)
+  if (vc.index) {
+    router.push(vc.index)
+  }
 }
 </script>
 <style lang="scss" scoped></style>
