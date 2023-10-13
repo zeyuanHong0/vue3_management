@@ -11,8 +11,18 @@
     margin-left: 5px;
 
     :nth-child(1) {
+      display: flex;
+      align-items: center;
       margin-left: 5px;
       cursor: pointer;
+    }
+
+    :deep(.el-breadcrumb__separator.el-icon) {
+      font-size: 18px;
+    }
+    :deep(.el-breadcrumb__inner.is-link) {
+      //面包屑字体
+      font-weight: 400;
     }
   }
 

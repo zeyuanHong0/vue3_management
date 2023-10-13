@@ -7,8 +7,21 @@
       </el-icon>
       <!-- 面包屑 -->
       <el-breadcrumb :separator-icon="ArrowRight">
-        <el-breadcrumb-item :to="{ path: '/' }">权限管理</el-breadcrumb-item>
-        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+        <el-breadcrumb-item
+          v-for="item in $route.matched"
+          :key="item.path"
+          :to="{ path: item.path }"
+          v-show="item.meta.title"
+        >
+          <!-- 图标 -->
+          <el-icon :size="18">
+            <component :is="item.meta.icon"></component>
+          </el-icon>
+          <!-- 名称 -->
+          <span style="margin: 0px 3px">
+            {{ item.meta.title }}
+          </span>
+        </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="_right">
@@ -42,9 +55,12 @@ export default { name: 'Tabbar' }
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { ArrowRight } from '@element-plus/icons-vue'
 import { useSettingsStore } from '@/store/modules/settings'
 
+const $route = useRoute() // 获取路由信息
+console.log($route)
 const settingStore = useSettingsStore() // 获取设置 store
 
 // 切换图标
