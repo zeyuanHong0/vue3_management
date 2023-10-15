@@ -37,7 +37,7 @@ export default { name: 'home' }
 </script>
 
 <script setup lang="ts">
-// import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import Logo from './logo/index.vue'
@@ -50,6 +50,11 @@ import { useSettingsStore } from '@/store/modules/settings'
 const $route = useRoute() // 通过 useRoute() 获取当前路由信息
 const userStore = useUserStore()
 const settingStore = useSettingsStore()
+
+onMounted(async () => {
+  // 获取用户信息
+  await userStore.getUserInfo()
+})
 </script>
 <style lang="scss" scoped>
 @import './scss/index.scss';
