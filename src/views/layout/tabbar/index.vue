@@ -40,11 +40,11 @@
       />
       <el-button size="small" icon="Setting" circle />
       <!-- 用户头像 -->
-      <img src="../../../../public/Logo.JPG" alt="" />
+      <img :src="userStore.avatar" alt="" />
       <!-- 下拉菜单 -->
       <el-dropdown>
         <span class="el-dropdown-link">
-          admin
+          {{ userStore.username }}
           <el-icon class="el-icon--right">
             <arrow-down />
           </el-icon>
@@ -67,10 +67,11 @@ export default { name: 'Tabbar' }
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { ArrowRight } from '@element-plus/icons-vue'
+import { useUserStore } from '@/store/modules/user'
 import { useSettingsStore } from '@/store/modules/settings'
 
 const $route = useRoute() // 获取路由信息
-console.log($route)
+const userStore = useUserStore() // 获取用户 store
 const settingStore = useSettingsStore() // 获取设置 store
 
 // 切换图标
