@@ -57,14 +57,15 @@ export default { name: 'login' }
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { User, Lock } from '@element-plus/icons-vue'
 import { ElNotification } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import { useUserStore } from '@/store/modules/user'
 import { getTime } from '@/utils/getTime'
 const userStore = useUserStore()
-const router = useRouter()
+const $router = useRouter()
+const $route = useRoute()
 
 interface ILoginForm {
   username: string
@@ -119,7 +120,9 @@ const handleSubmit = async () => {
     })
     // 获取当前时间
     const time = getTime()
-    router.push('/')
+    // 如果退出登录的时候，有传递 redirect 参数，就跳转到 redirect 页面，否则跳转到首页
+    const redirect = $route.query.redirect as string
+    $router.push(redirect || '/')
     ElNotification({
       title: `Hi,${time}好`,
       message: `欢迎回来`,

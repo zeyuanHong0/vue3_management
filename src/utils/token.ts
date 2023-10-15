@@ -9,3 +9,8 @@ export const SET_TOKEN = (token: string) => {
 export const GET_TOKEN = () => {
   return sessionStorage.getItem('token')
 }
+
+// 删除token
+export const REMOVE_TOKEN = () => {
+  sessionStorage.removeItem('token')
+}

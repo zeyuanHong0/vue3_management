@@ -51,7 +51,7 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -65,12 +65,13 @@ export default { name: 'Tabbar' }
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ArrowRight } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/modules/user'
 import { useSettingsStore } from '@/store/modules/settings'
 
 const $route = useRoute() // 获取路由信息
+const $router = useRouter() // 获取路由实例
 const userStore = useUserStore() // 获取用户 store
 const settingStore = useSettingsStore() // 获取设置 store
 
@@ -92,6 +93,19 @@ const changeFullScreen = () => {
   } else {
     document.documentElement.requestFullscreen()
   }
+}
+
+// 推出登录
+const handleLogout = () => {
+  userStore.userLogout()
+  // 跳转到登录页
+  $router.push({
+    path: '/login',
+    // 传递当前路由地址
+    query: {
+      redirect: $route.path,
+    },
+  })
 }
 </script>
 <style lang="scss" scoped>

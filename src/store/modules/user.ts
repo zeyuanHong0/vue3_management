@@ -4,7 +4,8 @@ import { fetchLogin, fetchUserInfo } from '@/api/user/index'
 import type { loginForm, loginRes, userInfoRes } from '@/api/user/type'
 import { constantRoute } from '@/router/routes'
 import { UserState } from './types/types'
-import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
+import { Remove } from '@element-plus/icons-vue/dist/types'
 
 export const useUserStore = defineStore('User', {
   state: (): UserState => {
@@ -52,6 +53,14 @@ export const useUserStore = defineStore('User', {
           message: error.message,
         })
       }
+    },
+
+    // 退出登录
+    userLogout() {
+      REMOVE_TOKEN()
+      this.token = ''
+      this.username = ''
+      this.avatar = ''
     },
   },
   getters: {},
