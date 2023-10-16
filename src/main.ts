@@ -12,6 +12,7 @@ import 'virtual:svg-icons-register'
 // 全局组件
 import gloablComponent from './components/index'
 import pinia from './store'
+import './permisstion' // 路由鉴权
 
 const app = createApp(App)
 app
