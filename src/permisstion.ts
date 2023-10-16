@@ -39,6 +39,7 @@ router.beforeEach(
             await userStore.getUserInfo()
             next()
           } catch (error) {
+            // 获取用户信息失败，清除token，跳转登录页(可能是token过期)
             userStore.userLogout()
             next({
               path: '/login',
