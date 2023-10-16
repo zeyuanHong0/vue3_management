@@ -41,17 +41,12 @@ export const useUserStore = defineStore('User', {
         if (res.code === 200) {
           this.username = res.data.checkUser.username
           this.avatar = res.data.checkUser.avatar
+          return '获取用户信息成功'
         } else {
-          ElMessage({
-            type: 'error',
-            message: '获取用户信息失败',
-          })
+          return Promise.reject('获取用户信息失败')
         }
       } catch (error: any) {
-        ElMessage({
-          type: 'error',
-          message: error.message,
-        })
+        return Promise.reject(error)
       }
     },
 

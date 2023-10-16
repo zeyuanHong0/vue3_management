@@ -43,7 +43,7 @@
       <img :src="userStore.avatar" alt="" />
       <!-- 下拉菜单 -->
       <el-dropdown>
-        <span class="el-dropdown-link">
+        <span class="el-dropdown-link" style="cursor: pointer">
           {{ userStore.username }}
           <el-icon class="el-icon--right">
             <arrow-down />
