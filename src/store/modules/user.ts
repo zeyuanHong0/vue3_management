@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ElMessage } from 'element-plus'
-import { fetchLogin, fetchUserInfo } from '@/api/user/index'
+import { fetchLogin, fetchUserInfo, fetchLogout } from '@/api/user/index'
 import type { loginForm, loginRes, userInfoRes } from '@/api/user/type'
 import { constantRoute } from '@/router/routes'
 import { UserState } from './types/types'
@@ -19,15 +19,15 @@ export const useUserStore = defineStore('User', {
   // 处理异步操作
   actions: {
     // 登录
-    async userLogin(data: loginForm) {
+    async userLogin(data: any) {
       try {
-        const res: loginRes = await fetchLogin(data)
+        const res: any = await fetchLogin(data)
         if (res.code === 200) {
-          this.token = res.data.token as string
-          SET_TOKEN(res.data.token as string)
+          this.token = res.data as string
+          SET_TOKEN(res.data as string)
           return 'is login'
         } else {
-          return Promise.reject(res)
+          return Promise.reject(res.message)
         }
       } catch (error: any) {
         return Promise.reject(error)
@@ -37,13 +37,13 @@ export const useUserStore = defineStore('User', {
     // 获取用户信息
     async getUserInfo() {
       try {
-        const res: userInfoRes = await fetchUserInfo()
+        const res: any = await fetchUserInfo()
         if (res.code === 200) {
-          this.username = res.data.checkUser.username
-          this.avatar = res.data.checkUser.avatar
+          this.username = res.data.username
+          this.avatar = res.data.avatar
           return '获取用户信息成功'
         } else {
-          return Promise.reject('获取用户信息失败')
+          return Promise.reject(new Error(res.message))
         }
       } catch (error: any) {
         return Promise.reject(error)
@@ -51,11 +51,21 @@ export const useUserStore = defineStore('User', {
     },
 
     // 退出登录
-    userLogout() {
-      REMOVE_TOKEN()
-      this.token = ''
-      this.username = ''
-      this.avatar = ''
+    async userLogout() {
+      try {
+        const res: any = await fetchLogout()
+        if (res.code === 200) {
+          REMOVE_TOKEN()
+          this.token = ''
+          this.username = ''
+          this.avatar = ''
+          return '退出登录成功'
+        } else {
+          return Promise.reject(new Error(res.message))
+        }
+      } catch (error) {
+        return Promise.reject(error)
+      }
     },
   },
   getters: {},

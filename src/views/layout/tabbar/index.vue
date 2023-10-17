@@ -69,6 +69,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ArrowRight } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/modules/user'
 import { useSettingsStore } from '@/store/modules/settings'
+import { ElNotification } from 'element-plus'
 
 const $route = useRoute() // 获取路由信息
 const $router = useRouter() // 获取路由实例
@@ -96,16 +97,24 @@ const changeFullScreen = () => {
 }
 
 // 推出登录
-const handleLogout = () => {
-  userStore.userLogout()
-  // 跳转到登录页
-  $router.push({
-    path: '/login',
-    // 传递当前路由地址
-    query: {
-      redirect: $route.path,
-    },
-  })
+const handleLogout = async () => {
+  try {
+    await userStore.userLogout()
+    // 跳转到登录页
+    $router.push({
+      path: '/login',
+      // 传递当前路由地址
+      query: {
+        redirect: $route.path,
+      },
+    })
+  } catch (error) {
+    ElNotification({
+      title: '退出登录失败',
+      message: error.message,
+      type: 'error',
+    })
+  }
 }
 </script>
 <style lang="scss" scoped>
