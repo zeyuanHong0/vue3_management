@@ -1,5 +1,9 @@
 import request from '@/utils/axios'
-import type { loginForm, loginRes, userInfoRes } from './type'
+import type {
+  loginFormData,
+  loginResponseData,
+  userInfoResponsedata,
+} from './type'
 
 enum API {
   LOGIN_URL = '/admin/acl/index/login',
@@ -8,16 +12,16 @@ enum API {
 }
 
 // 登录接口
-export const fetchLogin = (data: loginForm) => {
-  return request.post(API.LOGIN_URL, data)
+export const fetchLogin = (data: loginFormData) => {
+  return request.post<any, loginResponseData>(API.LOGIN_URL, data)
 }
 
 // 获取用户信息
 export const fetchUserInfo = () => {
-  return request.get(API.USERINFO_URL)
+  return request.get<any, userInfoResponsedata>(API.USERINFO_URL)
 }
 
 // 退出登录
 export const fetchLogout = () => {
-  return request.post(API.LOGOUT_URL)
+  return request.post<any, any>(API.LOGOUT_URL)
 }

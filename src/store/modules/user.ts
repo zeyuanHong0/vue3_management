@@ -1,11 +1,15 @@
 import { defineStore } from 'pinia'
-import { ElMessage } from 'element-plus'
+// import { ElMessage } from 'element-plus'
 import { fetchLogin, fetchUserInfo, fetchLogout } from '@/api/user/index'
-import type { loginForm, loginRes, userInfoRes } from '@/api/user/type'
+import type {
+  loginFormData,
+  loginResponseData,
+  userInfoResponsedata,
+} from '@/api/user/type'
+
 import { constantRoute } from '@/router/routes'
 import { UserState } from './types/types'
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
-import { Remove } from '@element-plus/icons-vue/dist/types'
 
 export const useUserStore = defineStore('User', {
   state: (): UserState => {
@@ -19,9 +23,9 @@ export const useUserStore = defineStore('User', {
   // 处理异步操作
   actions: {
     // 登录
-    async userLogin(data: any) {
+    async userLogin(data: loginFormData) {
       try {
-        const res: any = await fetchLogin(data)
+        const res: loginResponseData = await fetchLogin(data)
         if (res.code === 200) {
           this.token = res.data as string
           SET_TOKEN(res.data as string)
@@ -37,9 +41,9 @@ export const useUserStore = defineStore('User', {
     // 获取用户信息
     async getUserInfo() {
       try {
-        const res: any = await fetchUserInfo()
+        const res: userInfoResponsedata = await fetchUserInfo()
         if (res.code === 200) {
-          this.username = res.data.username
+          this.username = res.data.name
           this.avatar = res.data.avatar
           return '获取用户信息成功'
         } else {
