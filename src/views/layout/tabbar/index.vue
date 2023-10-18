@@ -108,7 +108,7 @@ const handleLogout = async () => {
         redirect: $route.path,
       },
     })
-  } catch (error) {
+  } catch (error: any) {
     ElNotification({
       title: '退出登录失败',
       message: error.message,
