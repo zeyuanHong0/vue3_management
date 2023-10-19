@@ -17,7 +17,6 @@ import './permisstion' // 路由鉴权
 const app = createApp(App)
 app
   .use(router)
-  .use(ElementPlus)
   .use(ElementPlus, {
     locale: zhCn,
   })
