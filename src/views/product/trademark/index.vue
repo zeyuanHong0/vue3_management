@@ -35,9 +35,9 @@
     <el-pagination
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
+      :background="true"
+      :pager-count="9"
       :page-sizes="[3, 5, 7, 9]"
-      :disabled="disabled"
-      :background="background"
       layout="prev, pager, next, jumper,->,sizes,total"
       :total="total"
       @size-change="handleSizeChange"
@@ -94,8 +94,9 @@ onMounted(async () => {
 })
 
 // 获取品牌列表
-const handleGetTrademarkList = async () => {
+const handleGetTrademarkList = async (page = 1) => {
   try {
+    currentPage.value = page // 当前页(默认为第一页)
     const res: TradeMarkResponsedata = await fetchTrademarkList(
       currentPage.value,
       pageSize.value,
@@ -109,6 +110,17 @@ const handleGetTrademarkList = async () => {
   } catch (error: any) {
     // ElMessage.error(error)
   }
+}
+
+// 分页
+const handleCurrentChange = (val: number) => {
+  currentPage.value = val
+  handleGetTrademarkList(currentPage.value)
+}
+// 每页条数
+const handleSizeChange = (val: number) => {
+  pageSize.value = val
+  handleGetTrademarkList()
 }
 </script>
 <style lang="scss" scoped></style>
