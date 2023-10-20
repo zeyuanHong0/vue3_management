@@ -1,5 +1,5 @@
 // 登录接口参数类型
-export interface loginFormData {
+export interface LoginFormData {
   username: string
   password: string
 }
@@ -12,16 +12,16 @@ interface ResponseData {
 }
 
 // 登录接口返回数据类型
-export interface loginResponseData extends ResponseData {
+export interface LoginResponseData extends ResponseData {
   data: string
 }
 
 // 获取用户信息接口返回数据类型
-export interface userInfoResponsedata extends ResponseData {
-  data: userInfo
+export interface UserInfoResponsedata extends ResponseData {
+  data: UserInfo
 }
 
-interface userInfo {
+interface UserInfo {
   avatar: string
   name: string
   roles: string[]

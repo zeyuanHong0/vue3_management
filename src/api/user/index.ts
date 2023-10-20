@@ -1,8 +1,8 @@
 import request from '@/utils/axios'
 import type {
-  loginFormData,
-  loginResponseData,
-  userInfoResponsedata,
+  LoginFormData,
+  LoginResponseData,
+  UserInfoResponsedata,
 } from './type'
 
 enum API {
@@ -12,13 +12,13 @@ enum API {
 }
 
 // 登录接口
-export const fetchLogin = (data: loginFormData) => {
-  return request.post<any, loginResponseData>(API.LOGIN_URL, data)
+export const fetchLogin = (data: LoginFormData) => {
+  return request.post<any, LoginResponseData>(API.LOGIN_URL, data)
 }
 
 // 获取用户信息
 export const fetchUserInfo = () => {
-  return request.get<any, userInfoResponsedata>(API.USERINFO_URL)
+  return request.get<any, UserInfoResponsedata>(API.USERINFO_URL)
 }
 
 // 退出登录

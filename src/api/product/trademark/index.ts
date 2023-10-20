@@ -1,4 +1,5 @@
 import request from '@/utils/axios'
+import type { TradeMarkResponsedata } from './type'
 
 enum API {
   LIST_URL = '/admin/product/baseTrademark',
@@ -10,5 +11,7 @@ enum API {
  * @param limit 每页条数
  */
 export const fetchTrademarkList = (page: number, limit: number) => {
-  return request.get<any, any>(`${API.LIST_URL}/${page}/${limit}`)
+  return request.get<any, TradeMarkResponsedata>(
+    `${API.LIST_URL}/${page}/${limit}`,
+  )
 }

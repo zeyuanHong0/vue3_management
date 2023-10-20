@@ -20,7 +20,7 @@
       <!-- 品牌LOGO -->
       <el-table-column label="品牌LOGO">
         <template #default="{ row }">
-          <img :src="row.logUrl" alt="" style="width: 100px; height: 100px" />
+          <img :src="row.logoUrl" alt="" style="width: 120px; height: 100px" />
         </template>
       </el-table-column>
       <!-- 品牌操作 -->
@@ -54,32 +54,36 @@ export default { name: '' }
 import { ref, onMounted, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { fetchTrademarkList } from '@/api/product/trademark'
+import type {
+  Records,
+  TradeMarkResponsedata,
+} from '@/api/product/trademark/type'
 
-const trademarkList = ref([
-  {
-    id: 1,
-    createTime: '2021-12-10 01:31:41',
-    updateTime: '2023-04-15 15:48:02',
-    tmName: '小米',
-    logoUrl:
-      '39.98.123.211/group1/M00/03/D9/rBHu8mHmKC6AQ-j2AAAb72A3EO0942.jpg',
-  },
-  {
-    id: 2,
-    createTime: '2021-12-10 01:31:41',
-    updateTime: '2023-04-15 15:48:21',
-    tmName: '苹果',
-    logoUrl:
-      'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKHOADErHAAAQBezsFBo612.jpg',
-  },
-  {
-    id: 3,
-    createTime: '2021-12-10 01:31:41',
-    updateTime: '2023-04-15 15:48:28',
-    tmName: '华为',
-    logoUrl:
-      'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKF2AWpcKAADv98DWYRo516.jpg',
-  },
+const trademarkList = ref<Records>([
+  // {
+  //   id: 1,
+  //   createTime: '2021-12-10 01:31:41',
+  //   updateTime: '2023-04-15 15:48:02',
+  //   tmName: '小米',
+  //   logoUrl:
+  //     '39.98.123.211/group1/M00/03/D9/rBHu8mHmKC6AQ-j2AAAb72A3EO0942.jpg',
+  // },
+  // {
+  //   id: 2,
+  //   createTime: '2021-12-10 01:31:41',
+  //   updateTime: '2023-04-15 15:48:21',
+  //   tmName: '苹果',
+  //   logoUrl:
+  //     'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKHOADErHAAAQBezsFBo612.jpg',
+  // },
+  // {
+  //   id: 3,
+  //   createTime: '2021-12-10 01:31:41',
+  //   updateTime: '2023-04-15 15:48:28',
+  //   tmName: '华为',
+  //   logoUrl:
+  //     'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKF2AWpcKAADv98DWYRo516.jpg',
+  // },
 ])
 const currentPage = ref<number>(1)
 const pageSize = ref<number>(3)
@@ -92,7 +96,10 @@ onMounted(async () => {
 // 获取品牌列表
 const handleGetTrademarkList = async () => {
   try {
-    const res: any = await fetchTrademarkList(currentPage.value, pageSize.value)
+    const res: TradeMarkResponsedata = await fetchTrademarkList(
+      currentPage.value,
+      pageSize.value,
+    )
     if (res.code === 200) {
       trademarkList.value = res.data.records
       total.value = res.data.total
