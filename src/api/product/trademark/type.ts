@@ -4,7 +4,7 @@ interface ResponseData {
   ok: boolean
 }
 
-interface Trademark {
+export interface Trademark {
   id?: number
   tmName: string
   logoUrl: string

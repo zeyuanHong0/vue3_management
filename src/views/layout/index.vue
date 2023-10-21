@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-export default { name: 'home' }
+export default { name: 'Layout' }
 </script>
 
 <script setup lang="ts">

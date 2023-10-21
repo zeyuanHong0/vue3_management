@@ -1,7 +1,14 @@
 <template>
   <el-card class="box-card">
     <!-- 添加按钮 -->
-    <el-button icon="Plus" type="primary" size="default">添加品牌</el-button>
+    <el-button
+      icon="Plus"
+      type="primary"
+      size="default"
+      @click="showAddTrademark"
+    >
+      添加品牌
+    </el-button>
     <!-- 表格 -->
     <el-table style="margin: 10px 0" :data="trademarkList" border>
       <!-- 序号 -->
@@ -44,6 +51,49 @@
       @current-change="handleCurrentChange"
     />
   </el-card>
+
+  <!-- 添加品牌弹窗 -->
+  <el-dialog
+    v-model="isShowAddTrademark"
+    @close="closeAddTrademark"
+    width="50%"
+    title="添加品牌"
+  >
+    <el-form
+      ref="trademarkFormRef"
+      :model="trademarkForm"
+      :rules="rules"
+      :label-position="right"
+    >
+      <el-form-item label="品牌名称" prop="tmName">
+        <el-input v-model="trademarkForm.tmName" placeholder="请输入品牌名称" />
+      </el-form-item>
+      <el-form-item label="品牌LOGO" prop="logoUrl">
+        <el-upload
+          class="avatar-uploader"
+          action="#"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+        >
+          <img
+            v-if="trademarkForm.logoUrl"
+            :src="trademarkForm.logoUrl"
+            class="avatar"
+          />
+          <el-icon v-else class="avatar-uploader-icon">
+            <upload-filled />
+          </el-icon>
+        </el-upload>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="closeAddTrademark">取消</el-button>
+        <el-button type="primary" @click="addTrademark">确定</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts">
@@ -51,43 +101,35 @@ export default { name: '' }
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { fetchTrademarkList } from '@/api/product/trademark'
 import type {
   Records,
   TradeMarkResponsedata,
+  Trademark,
 } from '@/api/product/trademark/type'
 
-const trademarkList = ref<Records>([
-  // {
-  //   id: 1,
-  //   createTime: '2021-12-10 01:31:41',
-  //   updateTime: '2023-04-15 15:48:02',
-  //   tmName: '小米',
-  //   logoUrl:
-  //     '39.98.123.211/group1/M00/03/D9/rBHu8mHmKC6AQ-j2AAAb72A3EO0942.jpg',
-  // },
-  // {
-  //   id: 2,
-  //   createTime: '2021-12-10 01:31:41',
-  //   updateTime: '2023-04-15 15:48:21',
-  //   tmName: '苹果',
-  //   logoUrl:
-  //     'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKHOADErHAAAQBezsFBo612.jpg',
-  // },
-  // {
-  //   id: 3,
-  //   createTime: '2021-12-10 01:31:41',
-  //   updateTime: '2023-04-15 15:48:28',
-  //   tmName: '华为',
-  //   logoUrl:
-  //     'http://39.98.123.211/group1/M00/03/D9/rBHu8mHmKF2AWpcKAADv98DWYRo516.jpg',
-  // },
-])
+const trademarkList = ref<Records>([])
 const currentPage = ref<number>(1)
 const pageSize = ref<number>(3)
 const total = ref<number>(0)
+const trademarkFormRef = ref<FormInstance>()
+const isShowAddTrademark = ref<boolean>(false) // 是否显示添加品牌弹窗
+const trademarkForm = ref<Trademark>({
+  // 品牌表单
+  tmName: '',
+  logoUrl: '',
+})
+
+const rules = reactive<FormRules>({
+  tmName: [
+    { required: true, message: '请输入品牌名称', trigger: 'blur' },
+    { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' },
+  ],
+  logoUrl: [{ required: true, message: '请上传品牌LOGO', trigger: 'change' }],
+})
 
 onMounted(async () => {
   handleGetTrademarkList()
@@ -122,5 +164,41 @@ const handleSizeChange = (val: number) => {
   pageSize.value = val
   handleGetTrademarkList()
 }
+
+//打开添加品牌弹窗
+const showAddTrademark = () => {
+  isShowAddTrademark.value = true
+}
+
+// 关闭添加品牌弹窗
+const closeAddTrademark = () => {
+  isShowAddTrademark.value = false
+  // 清空
+  trademarkForm.value.tmName = ''
+  trademarkForm.value.logoUrl = ''
+}
+
+// 新增品牌
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
+</style>
