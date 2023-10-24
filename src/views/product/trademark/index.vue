@@ -70,11 +70,11 @@
       </el-form-item>
       <el-form-item label="品牌LOGO" prop="logoUrl">
         <el-upload
+          v-loading="logoLoading"
           class="avatar-uploader"
-          action="#"
           :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
+          :http-request="uploadLogo"
+          accept="image/*"
         >
           <img
             v-if="trademarkForm.logoUrl"
@@ -105,6 +105,7 @@ import { ref, onMounted, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { fetchTrademarkList } from '@/api/product/trademark'
+import { fetchUploadFile } from '@/api/file'
 import type {
   Records,
   TradeMarkResponsedata,
@@ -117,6 +118,7 @@ const pageSize = ref<number>(3)
 const total = ref<number>(0)
 const trademarkFormRef = ref<FormInstance>()
 const isShowAddTrademark = ref<boolean>(false) // 是否显示添加品牌弹窗
+const logoLoading = ref<boolean>(false)
 const trademarkForm = ref<Trademark>({
   // 品牌表单
   tmName: '',
@@ -178,9 +180,34 @@ const closeAddTrademark = () => {
   trademarkForm.value.logoUrl = ''
 }
 
-// 新增品牌
+// 上传品牌 logo
+const uploadLogo = async ({ file }: any) => {
+  // 大小不超过 4MB
+  if (file.size / 1024 / 1024 > 4) {
+    ElMessage.error('上传文件大小不能超过 4MB!')
+    return
+  }
+  // 上传图片到服务器
+  logoLoading.value = true
+  try {
+    const res = await fetchUploadFile(file)
+    if (res.code === 200) {
+      trademarkForm.value.logoUrl = res.data
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (error: any) {
+    ElMessage.error(error)
+  } finally {
+    logoLoading.value = false
+  }
+}
 </script>
 <style lang="scss" scoped>
+.avatar {
+  width: 180px;
+  height: 180px;
+}
 .avatar-uploader .el-upload {
   border: 1px dashed var(--el-border-color);
   border-radius: 6px;
