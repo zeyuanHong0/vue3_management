@@ -104,7 +104,7 @@ export default { name: '' }
 import { ref, onMounted, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { fetchTrademarkList } from '@/api/product/trademark'
+import { fetchTrademarkList, fetchAddTrademark } from '@/api/product/trademark'
 import { fetchUploadFile } from '@/api/file'
 import type {
   Records,
@@ -201,6 +201,28 @@ const uploadLogo = async ({ file }: any) => {
   } finally {
     logoLoading.value = false
   }
+}
+
+// 添加品牌
+const addTrademark = () => {
+  try {
+    trademarkFormRef.value?.validate(async (valid: boolean) => {
+      if (!valid) {
+        return
+      } else {
+        try {
+          const res: any = await fetchAddTrademark(trademarkForm.value)
+          if (res.code === 200) {
+            ElMessage.success('添加成功')
+            isShowAddTrademark.value = false
+            handleGetTrademarkList()
+          }
+        } catch (error: any) {
+          ElMessage.error(error)
+        }
+      }
+    })
+  } catch (error) {}
 }
 </script>
 <style lang="scss" scoped>
