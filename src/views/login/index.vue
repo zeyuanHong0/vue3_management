@@ -114,12 +114,12 @@ const handleSubmit = async () => {
   // 登录
   try {
     loading.value = true
-    // await userStore.userLogin({
-    //   username: loginForm.username,
-    //   password: loginForm.password,
-    // })
-    userStore.token =
-      'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSCjAK0A0Ndg1S0lFKrShQsjI0s7Q0NzQwMjTWUSotTi3yTAGKQZh-ibmpQB2JKbmZeUq1AAzwza9BAAAA.JPata0xZLOJA9kKA3FBt2WDudZX251gm72Szm6d5yPLd7QaRyej7mzyIevD3OWZsDUCgch6oKTzFsnGMFko0NQ'
+    await userStore.userLogin({
+      username: loginForm.username,
+      password: loginForm.password,
+    })
+    // userStore.token =
+    // 'eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWKi5NUrJSCjAK0A0Ndg1S0lFKrShQsjI0NzAwNjO1NDbRUSotTi3yTAGKQZh-ibmpQB2JKbmZeUq1AHlHQF9BAAAA.2vMlDMb5Acwh8HPVj5yHVZIqKDkp6Idt62UPzglVnk-gW9-huCn5sduDCMPkXEVb7IRNBBMty90hNDiZ2KyNSQ'
     // 获取当前时间
     const time = getTime()
     // 如果退出登录的时候，有传递 redirect 参数，就跳转到 redirect 页面，否则跳转到首页

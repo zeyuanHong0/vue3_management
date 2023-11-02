@@ -32,9 +32,19 @@
       </el-table-column>
       <!-- 品牌操作 -->
       <el-table-column label="品牌操作">
-        <template #default>
-          <el-button type="warning" size="small" icon="Edit"></el-button>
-          <el-button type="danger" size="small" icon="Delete"></el-button>
+        <template #default="{ row }">
+          <el-button
+            type="warning"
+            size="small"
+            icon="Edit"
+            @click="handleEdit(row)"
+          ></el-button>
+          <el-button
+            type="danger"
+            size="small"
+            icon="Delete"
+            @click="handleDelete"
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -57,7 +67,7 @@
     v-model="isShowAddTrademark"
     @close="closeAddTrademark"
     width="50%"
-    title="添加品牌"
+    :title="trademarkForm.id ? '修改品牌' : '添加品牌'"
   >
     <el-form
       ref="trademarkFormRef"
@@ -90,7 +100,9 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="closeAddTrademark">取消</el-button>
-        <el-button type="primary" @click="addTrademark">确定</el-button>
+        <el-button type="primary" @click="addOrUpdateTrademark">
+          {{ trademarkForm.id ? '修改' : '添加' }}
+        </el-button>
       </span>
     </template>
   </el-dialog>
@@ -104,7 +116,11 @@ export default { name: '' }
 import { ref, onMounted, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { fetchTrademarkList, fetchAddTrademark } from '@/api/product/trademark'
+import {
+  fetchTrademarkList,
+  fetchAddTrademark,
+  fetchUpdateTrademark,
+} from '@/api/product/trademark'
 import { fetchUploadFile } from '@/api/file'
 import type {
   Records,
@@ -178,6 +194,10 @@ const closeAddTrademark = () => {
   // 清空
   trademarkForm.value.tmName = ''
   trademarkForm.value.logoUrl = ''
+  if (trademarkForm.value.id) {
+    // 移除 id 属性
+    delete trademarkForm.value.id
+  }
 }
 
 // 上传品牌 logo
@@ -203,26 +223,45 @@ const uploadLogo = async ({ file }: any) => {
   }
 }
 
-// 添加品牌
-const addTrademark = () => {
+// 添加or修改品牌
+const addOrUpdateTrademark = async () => {
   try {
-    trademarkFormRef.value?.validate(async (valid: boolean) => {
+    trademarkFormRef.value?.validate(async (valid) => {
       if (!valid) {
         return
-      } else {
-        try {
-          const res: any = await fetchAddTrademark(trademarkForm.value)
-          if (res.code === 200) {
-            ElMessage.success('添加成功')
-            isShowAddTrademark.value = false
-            handleGetTrademarkList()
-          }
-        } catch (error: any) {
-          ElMessage.error(error)
-        }
       }
+
+      let res
+      if (!trademarkForm.value.id) {
+        // 新增品牌
+        res = await fetchAddTrademark(trademarkForm.value)
+      } else {
+        // 修改品牌
+        res = await fetchUpdateTrademark(trademarkForm.value)
+      }
+
+      handleResponse(res)
     })
-  } catch (error) {}
+  } catch (error) {
+    ElMessage.error('操作失败')
+  }
+}
+
+const handleResponse = (res: any) => {
+  if (res.code === 200) {
+    ElMessage.success(trademarkForm.value.id ? '修改成功' : '添加成功')
+    // 修改的话就留在当前页面，新增的话就跳转到第一页
+    handleGetTrademarkList(trademarkForm.value.id ? currentPage.value : 1)
+    closeAddTrademark()
+  } else {
+    ElMessage.error(res.message)
+  }
+}
+
+// 点击修改品牌按钮
+const handleEdit = (row: Trademark) => {
+  Object.assign(trademarkForm.value, row)
+  isShowAddTrademark.value = true
 }
 </script>
 <style lang="scss" scoped>

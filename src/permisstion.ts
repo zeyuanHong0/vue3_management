@@ -36,10 +36,10 @@ router.beforeEach(
           next()
         } else {
           try {
-            // await userStore.getUserInfo()
-            userStore.username = 'admin'
-            userStore.avatar =
-              'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
+            await userStore.getUserInfo()
+            // userStore.username = 'admin'
+            // userStore.avatar =
+            //   'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
             next()
           } catch (error) {
             // 获取用户信息失败，清除token，跳转登录页(可能是token过期)
