@@ -198,6 +198,8 @@ const closeAddTrademark = () => {
     // 移除 id 属性
     delete trademarkForm.value.id
   }
+  // 清空错误提示信息
+  trademarkFormRef.value?.clearValidate()
 }
 
 // 上传品牌 logo
