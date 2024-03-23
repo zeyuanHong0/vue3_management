@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-export default { name: 'login' }
+export default { name: 'Login' }
 </script>
 
 <script setup lang="ts">

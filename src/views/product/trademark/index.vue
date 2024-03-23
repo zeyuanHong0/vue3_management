@@ -114,7 +114,7 @@
 </template>
 
 <script lang="ts">
-export default { name: '' }
+export default { name: 'Trademark' }
 </script>
 
 <script setup lang="ts">
