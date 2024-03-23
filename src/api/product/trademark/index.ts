@@ -6,6 +6,7 @@ enum API {
   ADD_TRANMARK_URL = '/admin/product/baseTrademark/save',
   UPDATE_TRANMARK_URL = '/admin/product/baseTrademark/update',
   GETINFO_TRANMARK_URL = '/admin/product/baseTrademark/get',
+  DELETE_TRANMARK_URL = '/admin/product/baseTrademark/remove',
 }
 
 /**
@@ -41,4 +42,12 @@ export const fetchUpdateTrademark = (data: Trademark) => {
  * */
 export const fetchTrademarkInfoById = (id: number) => {
   return request.get<any, Trademark>(`${API.GETINFO_TRANMARK_URL}/${id}`)
+}
+
+/**
+ * 删除品牌
+ * @param id 品牌id
+ */
+export const fetchDeleteTrademark = (id: number) => {
+  return request.delete<any, any>(`${API.DELETE_TRANMARK_URL}/${id}`)
 }

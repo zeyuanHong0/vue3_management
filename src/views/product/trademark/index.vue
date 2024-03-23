@@ -39,12 +39,17 @@
             icon="Edit"
             @click="handleEdit(row)"
           ></el-button>
-          <el-button
-            type="danger"
-            size="small"
+          <!-- 删除品牌 -->
+          <el-popconfirm
+            :title="`确定删除${row.tmName}吗?`"
+            @confirm="handleDelete(row.id)"
+            width="200"
             icon="Delete"
-            @click="handleDelete"
-          ></el-button>
+          >
+            <template #reference>
+              <el-button type="danger" size="small" icon="Delete"></el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -120,6 +125,7 @@ import {
   fetchTrademarkList,
   fetchAddTrademark,
   fetchUpdateTrademark,
+  fetchDeleteTrademark,
 } from '@/api/product/trademark'
 import { fetchUploadFile } from '@/api/file'
 import type {
@@ -232,7 +238,6 @@ const addOrUpdateTrademark = async () => {
       if (!valid) {
         return
       }
-
       let res
       if (!trademarkForm.value.id) {
         // 新增品牌
@@ -241,7 +246,6 @@ const addOrUpdateTrademark = async () => {
         // 修改品牌
         res = await fetchUpdateTrademark(trademarkForm.value)
       }
-
       handleResponse(res)
     })
   } catch (error) {
@@ -264,6 +268,26 @@ const handleResponse = (res: any) => {
 const handleEdit = (row: Trademark) => {
   Object.assign(trademarkForm.value, row)
   isShowAddTrademark.value = true
+}
+
+// 确定删除品牌
+const handleDelete = async (id: number) => {
+  try {
+    const res: any = await fetchDeleteTrademark(id)
+    if (res.code === 200) {
+      ElMessage.success('删除成功')
+      // 重新获取列表
+      handleGetTrademarkList(
+        trademarkList.value.length > 1
+          ? currentPage.value
+          : currentPage.value - 1,
+      )
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (error: any) {
+    ElMessage.error(error)
+  }
 }
 </script>
 <style lang="scss" scoped>
