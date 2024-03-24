@@ -6,6 +6,7 @@
           v-model="selectedFirstLevel"
           placeholder="请选择"
           @change="handleGetSecondLevel"
+          :disabled="readonly"
         >
           <el-option
             v-for="item in firstLevelList"
@@ -20,6 +21,7 @@
           v-model="selectedSecondLevel"
           placeholder="请选择"
           @change="handleGetThirdLevel"
+          :disabled="readonly"
         >
           <el-option
             v-for="item in secondLevelList"
@@ -34,6 +36,7 @@
           v-model="selectedThirdLevel"
           placeholder="请选择"
           @change="getAttrInfoList"
+          :disabled="readonly"
         >
           <el-option
             v-for="item in thirdLevelList"
@@ -54,7 +57,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, toRefs } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   fetchProductCategory1,
@@ -71,20 +74,15 @@ const secondLevelList = ref<Product[]>([])
 const thirdLevelList = ref<Product[]>([])
 
 const $emit = defineEmits(['getSelectedId'])
-// const props = defineProps({
-//   firstLevelList: {
-//     type: Array<Product>,
-//     default: () => [],
-//   },
-//   secondLevelList: {
-//     type: Array<Product>,
-//     default: () => [],
-//   },
-//   thirdLevelList: {
-//     type: Array<Product>,
-//     default: () => [],
-//   },
-// })
+
+const props = defineProps({
+  readonly: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const { readonly } = toRefs(props)
 
 onMounted(() => {
   handleGetFirstLevel()
@@ -109,6 +107,7 @@ const handleGetSecondLevel = async () => {
   // 清空二、三级分类
   selectedSecondLevel.value = undefined
   selectedThirdLevel.value = undefined
+  handleIdChanged()
   try {
     const res = await fetchProductCategory2(selectedFirstLevel.value as number)
     if (res.code === 200) {
@@ -125,6 +124,7 @@ const handleGetSecondLevel = async () => {
 const handleGetThirdLevel = async () => {
   // 清空三级分类
   selectedThirdLevel.value = undefined
+  handleIdChanged()
   try {
     const res = await fetchProductCategory3(selectedSecondLevel.value as number)
     if (res.code === 200) {
@@ -139,6 +139,10 @@ const handleGetThirdLevel = async () => {
 
 // 获取属性详情列表
 const getAttrInfoList = () => {
+  handleIdChanged()
+}
+
+const handleIdChanged = () => {
   $emit(
     'getSelectedId',
     selectedFirstLevel.value,
