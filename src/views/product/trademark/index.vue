@@ -54,16 +54,11 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <el-pagination
-      v-model:current-page="currentPage"
-      v-model:page-size="pageSize"
-      :background="true"
-      :pager-count="9"
-      :page-sizes="[3, 5, 7, 9]"
-      layout="prev, pager, next, jumper,->,sizes,total"
+    <Pagination
       :total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
+      v-model:currentPage="currentPage"
+      v-model:pageSize="pageSize"
+      @paginationChange="handlePaginationChange"
     />
   </el-card>
 
@@ -78,7 +73,7 @@
       ref="trademarkFormRef"
       :model="trademarkForm"
       :rules="rules"
-      :label-position="right"
+      label-position="right"
     >
       <el-form-item label="品牌名称" prop="tmName">
         <el-input v-model="trademarkForm.tmName" placeholder="请输入品牌名称" />
@@ -159,6 +154,11 @@ onMounted(async () => {
   handleGetTrademarkList()
 })
 
+// 分页
+const handlePaginationChange = () => {
+  handleGetTrademarkList(currentPage.value)
+}
+
 // 获取品牌列表
 const handleGetTrademarkList = async (page = 1) => {
   try {
@@ -176,17 +176,6 @@ const handleGetTrademarkList = async (page = 1) => {
   } catch (error: any) {
     // ElMessage.error(error)
   }
-}
-
-// 分页
-const handleCurrentChange = (val: number) => {
-  currentPage.value = val
-  handleGetTrademarkList(currentPage.value)
-}
-// 每页条数
-const handleSizeChange = (val: number) => {
-  pageSize.value = val
-  handleGetTrademarkList()
 }
 
 //打开添加品牌弹窗
