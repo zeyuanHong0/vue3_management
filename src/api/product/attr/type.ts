@@ -39,6 +39,7 @@ export interface Attr {
 
 export type Attrs = Attr[]
 
+// 添加或修改属性返回数据
 export interface AttrsResponseData extends ResponseData {
   data: Attrs
 }
