@@ -1,11 +1,17 @@
 import request from '@/utils/axios'
-import { ProductsResponseData, AttrsResponseData } from './type'
+import {
+  ResponseData,
+  ProductsResponseData,
+  AttrsResponseData,
+  Attr,
+} from './type'
 
 enum API {
   CATEGORY1_URL = '/admin/product/getCategory1', // 一级商品分类
   CATEGORY2_URL = '/admin/product/getCategory2', // 二级商品分类
   CATEGORY3_URL = '/admin/product/getCategory3', // 三级商品分类
   ATTR_INFO_LIST_URL = '/admin/product/attrInfoList', // 获取属性详情列表
+  ATTR_ADD_OR_UPDATE_URL = '/admin/product/saveAttrInfo', // 新增或修改属性
 }
 
 /**
@@ -49,4 +55,9 @@ export const fetchAttrInfoList = (
   return request.get<any, AttrsResponseData>(
     `${API.ATTR_INFO_LIST_URL}/${category1Id}/${category2Id}/${category3Id}`,
   )
+}
+
+// 新增或修改属性
+export const fetchAddOrUpdateAttr = (data: Attr) => {
+  return request.post<any, ResponseData>(API.ATTR_ADD_OR_UPDATE_URL, data)
 }

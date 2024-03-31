@@ -20,17 +20,17 @@ export interface ProductsResponseData extends ResponseData {
 }
 
 export interface AttrValue {
-  id: number
-  createTime: string | null
-  updateTime: string | null
+  id?: number
+  createTime?: string | null
+  updateTime?: string | null
   valueName: string
-  attrId: number
+  attrId?: number
 }
 
 export interface Attr {
-  id: number
-  createTime: string | null
-  updateTime: string | null
+  id?: number
+  createTime?: string | null
+  updateTime?: string | null
   attrName: string
   categoryId: number
   categoryLevel: number

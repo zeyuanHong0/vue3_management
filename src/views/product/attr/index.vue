@@ -72,14 +72,25 @@
         <!-- 属性名称 -->
         <el-form :inline="true">
           <el-form-item label="属性名称">
-            <el-input></el-input>
+            <el-input v-model="addAttrForm.attrName" />
           </el-form-item>
         </el-form>
         <!-- 按钮 -->
-        <el-button type="primary" icon="Plus">添加属性值</el-button>
+        <el-button
+          type="primary"
+          icon="Plus"
+          :disabled="!addAttrForm.attrName"
+          @click="handleAddAttrValue"
+        >
+          添加属性值
+        </el-button>
         <el-button>取消</el-button>
         <!-- 表格 -->
-        <el-table border style="margin-top: 10px" :data="attrList">
+        <el-table
+          border
+          style="margin-top: 10px"
+          :data="addAttrForm.attrValueList"
+        >
           <el-table-column
             label="序号"
             type="index"
@@ -87,43 +98,36 @@
           ></el-table-column>
           <el-table-column label="属性值名称">
             <template #default="{ row }">
-              <template v-for="item in row.attrValueList" :key="item.attrId">
-                <el-tag type="success" style="margin-left: 6px">
-                  {{ item.valueName }}
-                </el-tag>
-              </template>
+              <el-input
+                v-model="row.valueName"
+                placeholder="请输入属性值名称"
+              ></el-input>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="150">
-            <template #default="{ row }">
+            <template #default="{ $index }">
               <!-- 编辑 -->
-              <el-button
+              <!-- <el-button
                 type="primary"
                 size="small"
                 icon="Edit"
                 @click="handleEdit(row)"
-              ></el-button>
+              ></el-button> -->
               <!-- 删除 -->
-              <el-popconfirm
-                :title="`确定删除${row.attrName}吗?`"
-                @confirm="handleDelete(row.id)"
+              <el-button
+                type="danger"
+                size="small"
                 icon="Delete"
-                width="180"
-              >
-                <template #reference>
-                  <el-button
-                    type="danger"
-                    size="small"
-                    icon="Delete"
-                  ></el-button>
-                </template>
-              </el-popconfirm>
+                @click="handleDeleteAttr($index)"
+              ></el-button>
             </template>
           </el-table-column>
         </el-table>
         <!-- 按钮 -->
         <div style="margin-top: 10px">
-          <el-button type="primary" icon="Plus">保存</el-button>
+          <el-button type="primary" icon="Plus" @click="handleSaveAttr">
+            保存
+          </el-button>
           <el-button @click="cancelAdd">取消</el-button>
         </div>
       </div>
@@ -138,11 +142,11 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import levelSelector from '@/components/LevelSelector/levelSelector.vue'
 import { ElMessage } from 'element-plus'
-import { fetchAttrInfoList } from '@/api/product/attr'
-import type { Attrs } from '@/api/product/attr/type'
+import { fetchAddOrUpdateAttr, fetchAttrInfoList } from '@/api/product/attr'
+import type { Attrs, Attr } from '@/api/product/attr/type'
 
 const loading = ref<boolean>(false)
 const attrList = ref<Attrs>([])
@@ -150,6 +154,12 @@ const category1Id = ref<number | undefined>(undefined)
 const category2Id = ref<number | undefined>(undefined)
 const category3Id = ref<number | undefined>(undefined)
 const showDisplayArea = ref<boolean>(true)
+const addAttrForm = ref<Attr>({
+  attrName: '',
+  categoryId: 0,
+  categoryLevel: 3,
+  attrValueList: [],
+})
 
 // 获取选择的 id
 const getSelectedId = (
@@ -196,6 +206,39 @@ const showAdd = () => {
 // 取消添加
 const cancelAdd = () => {
   showDisplayArea.value = true
+}
+
+// 添加一项属性值
+const handleAddAttrValue = () => {
+  addAttrForm.value.attrValueList.push({
+    valueName: '',
+  })
+}
+
+// 删除一项属性
+const handleDeleteAttr = (index: number) => {
+  console.log(index)
+  addAttrForm.value.attrValueList.splice(index, 1)
+}
+
+// 保存属性
+const handleSaveAttr = async () => {
+  loading.value = true
+  try {
+    addAttrForm.value.categoryId = category3Id.value as number
+    const res = await fetchAddOrUpdateAttr(addAttrForm.value)
+    if (res.code === 200) {
+      ElMessage.success('保存成功')
+      handleGetAttrInfoList()
+      showDisplayArea.value = true
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (error: any) {
+    ElMessage.error(error)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 <style lang="scss" scoped></style>
