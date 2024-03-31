@@ -208,6 +208,16 @@ const cancelAdd = () => {
   showDisplayArea.value = true
 }
 
+// 清空添加的表单
+const clearAddForm = () => {
+  addAttrForm.value = {
+    attrName: '',
+    categoryId: 0,
+    categoryLevel: 3,
+    attrValueList: [],
+  }
+}
+
 // 添加一项属性值
 const handleAddAttrValue = () => {
   addAttrForm.value.attrValueList.push({
@@ -231,6 +241,7 @@ const handleSaveAttr = async () => {
       ElMessage.success('保存成功')
       handleGetAttrInfoList()
       showDisplayArea.value = true
+      clearAddForm()
     } else {
       ElMessage.error(res.message)
     }
