@@ -13,8 +13,10 @@ import 'virtual:svg-icons-register'
 import gloablComponent from './components/index'
 import pinia from './store'
 import './permisstion' // 路由鉴权
+import registerDirectives from '@/directives' // 注册指令
 
 const app = createApp(App)
+registerDirectives(app)
 app
   .use(router)
   .use(ElementPlus, {
