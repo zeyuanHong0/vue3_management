@@ -100,13 +100,14 @@
             <template #default="{ row, $index }">
               <!-- 编辑状态 -->
               <el-input
+                v-el-focus
                 v-if="row.showInput"
                 v-model="row.valueName"
                 placeholder="请输入属性值名称"
                 @blur="handleInputConfirm(row, $index)"
               ></el-input>
               <!-- 查看状态 -->
-              <div v-else>{{ row.valueName }}</div>
+              <div v-else @click="showInput($index)">{{ row.valueName }}</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="150">
@@ -133,7 +134,7 @@
           <el-button
             type="primary"
             icon="Plus"
-            @click="handleSaveAttr"
+            v-debounce="handleSaveAttr"
             :disabled="!addAttrForm.attrValueList.length"
           >
             保存
@@ -241,6 +242,11 @@ const handleAddAttrValue = () => {
 const handleDeleteAttr = (index: number) => {
   console.log(index)
   addAttrForm.value.attrValueList.splice(index, 1)
+}
+
+// 显示输入框
+const showInput = (index: number) => {
+  addAttrForm.value.attrValueList[index].showInput = true
 }
 
 // 输入框失去焦点触发
