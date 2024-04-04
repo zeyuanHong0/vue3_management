@@ -12,6 +12,7 @@ enum API {
   CATEGORY3_URL = '/admin/product/getCategory3', // 三级商品分类
   ATTR_INFO_LIST_URL = '/admin/product/attrInfoList', // 获取属性详情列表
   ATTR_ADD_OR_UPDATE_URL = '/admin/product/saveAttrInfo', // 新增或修改属性
+  ATTR_DELETE_URL = '/admin/product/deleteAttr', // 删除属性
 }
 
 /**
@@ -60,4 +61,9 @@ export const fetchAttrInfoList = (
 // 新增或修改属性
 export const fetchAddOrUpdateAttr = (data: Attr) => {
   return request.post<any, ResponseData>(API.ATTR_ADD_OR_UPDATE_URL, data)
+}
+
+// 删除属性
+export const fetchDeleteAttr = (attrId: number) => {
+  return request.delete<any, ResponseData>(`${API.ATTR_DELETE_URL}/${attrId}`)
 }

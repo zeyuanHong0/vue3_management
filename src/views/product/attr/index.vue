@@ -156,7 +156,11 @@ export default {
 import { ref } from 'vue'
 import levelSelector from '@/components/LevelSelector/levelSelector.vue'
 import { ElMessage } from 'element-plus'
-import { fetchAddOrUpdateAttr, fetchAttrInfoList } from '@/api/product/attr'
+import {
+  fetchAddOrUpdateAttr,
+  fetchAttrInfoList,
+  fetchDeleteAttr,
+} from '@/api/product/attr'
 import type { Attrs, Attr } from '@/api/product/attr/type'
 import { checkEmptyArray } from '@/utils'
 
@@ -295,6 +299,21 @@ const handleSaveAttr = async () => {
     ElMessage.error(error)
   } finally {
     loading.value = false
+  }
+}
+
+// 删除属性
+const handleDelete = async (id: number) => {
+  try {
+    const res = await fetchDeleteAttr(id)
+    if (res.code === 200) {
+      ElMessage.success('删除成功')
+      handleGetAttrInfoList()
+    } else {
+      ElMessage.error(res.message)
+    }
+  } catch (error: any) {
+    ElMessage.error(error)
   }
 }
 </script>
