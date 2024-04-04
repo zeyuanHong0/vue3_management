@@ -25,6 +25,7 @@ export interface AttrValue {
   updateTime?: string | null
   valueName: string
   attrId?: number
+  showInput?: boolean // 是否显示输入框
 }
 
 export interface Attr {

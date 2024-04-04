@@ -97,11 +97,16 @@
             width="100"
           ></el-table-column>
           <el-table-column label="属性值名称">
-            <template #default="{ row }">
+            <template #default="{ row, $index }">
+              <!-- 编辑状态 -->
               <el-input
+                v-if="row.showInput"
                 v-model="row.valueName"
                 placeholder="请输入属性值名称"
+                @blur="handleInputConfirm(row, $index)"
               ></el-input>
+              <!-- 查看状态 -->
+              <div v-else>{{ row.valueName }}</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="150">
@@ -125,7 +130,12 @@
         </el-table>
         <!-- 按钮 -->
         <div style="margin-top: 10px">
-          <el-button type="primary" icon="Plus" @click="handleSaveAttr">
+          <el-button
+            type="primary"
+            icon="Plus"
+            @click="handleSaveAttr"
+            :disabled="!addAttrForm.attrValueList.length"
+          >
             保存
           </el-button>
           <el-button @click="cancelAdd">取消</el-button>
@@ -147,6 +157,7 @@ import levelSelector from '@/components/LevelSelector/levelSelector.vue'
 import { ElMessage } from 'element-plus'
 import { fetchAddOrUpdateAttr, fetchAttrInfoList } from '@/api/product/attr'
 import type { Attrs, Attr } from '@/api/product/attr/type'
+import { checkEmptyArray } from '@/utils'
 
 const loading = ref<boolean>(false)
 const attrList = ref<Attrs>([])
@@ -222,6 +233,7 @@ const clearAddForm = () => {
 const handleAddAttrValue = () => {
   addAttrForm.value.attrValueList.push({
     valueName: '',
+    showInput: true,
   })
 }
 
@@ -231,8 +243,36 @@ const handleDeleteAttr = (index: number) => {
   addAttrForm.value.attrValueList.splice(index, 1)
 }
 
+// 输入框失去焦点触发
+const handleInputConfirm = (row: any, $index: number) => {
+  // 非空
+  if (row.valueName.trim() === '') {
+    // 删除
+    addAttrForm.value.attrValueList.splice($index, 1)
+    return
+  }
+  // 判断是否有重复的属性名称
+  addAttrForm.value.attrValueList.some((item: any, i: number) => {
+    if (i !== $index && item.valueName.trim() === row.valueName.trim()) {
+      ElMessage.warning('不能添加重复的属性值')
+      addAttrForm.value.attrValueList.splice($index, 1)
+      return
+    }
+  })
+
+  addAttrForm.value.attrValueList[$index].showInput = false
+}
+
 // 保存属性
 const handleSaveAttr = async () => {
+  // 校验一下
+  const checkResult = checkEmptyArray(
+    addAttrForm.value.attrValueList,
+    'valueName',
+  )
+  if (checkResult) {
+    return ElMessage.warning('属性值不能为空')
+  }
   loading.value = true
   try {
     addAttrForm.value.categoryId = category3Id.value as number
