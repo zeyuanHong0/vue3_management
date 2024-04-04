@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 // import { ElMessage } from 'element-plus'
 import { fetchLogin, fetchUserInfo, fetchLogout } from '@/api/user/index'
 import type {
-  loginFormData,
-  loginResponseData,
-  userInfoResponsedata,
+  LoginFormData,
+  LoginResponseData,
+  UserInfoResponsedata,
 } from '@/api/user/type'
 
 import { constantRoute } from '@/router/routes'
@@ -23,9 +23,9 @@ export const useUserStore = defineStore('User', {
   // 处理异步操作
   actions: {
     // 登录
-    async userLogin(data: loginFormData) {
+    async userLogin(data: LoginFormData) {
       try {
-        const res: loginResponseData = await fetchLogin(data)
+        const res: LoginResponseData = await fetchLogin(data)
         if (res.code === 200) {
           this.token = res.data as string
           SET_TOKEN(res.data as string)
@@ -41,7 +41,7 @@ export const useUserStore = defineStore('User', {
     // 获取用户信息
     async getUserInfo() {
       try {
-        const res: userInfoResponsedata = await fetchUserInfo()
+        const res: UserInfoResponsedata = await fetchUserInfo()
         if (res.code === 200) {
           this.username = res.data.name
           this.avatar = res.data.avatar
