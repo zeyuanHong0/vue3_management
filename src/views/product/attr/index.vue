@@ -84,7 +84,6 @@
         >
           添加属性值
         </el-button>
-        <el-button>取消</el-button>
         <!-- 表格 -->
         <el-table
           border
@@ -162,7 +161,7 @@ import {
   fetchDeleteAttr,
 } from '@/api/product/attr'
 import type { Attrs, Attr } from '@/api/product/attr/type'
-import { checkEmptyArray } from '@/utils'
+import { checkEmptyArray, cloneObj } from '@/utils'
 
 const loading = ref<boolean>(false)
 const attrList = ref<Attrs>([])
@@ -216,6 +215,7 @@ const handleGetAttrInfoList = async () => {
 
 // 展示添加属性区域
 const showAdd = () => {
+  clearAddForm()
   showDisplayArea.value = false
 }
 
@@ -315,6 +315,13 @@ const handleDelete = async (id: number) => {
   } catch (error: any) {
     ElMessage.error(error)
   }
+}
+
+// 修改属性
+const handleEdit = async (row: Attr) => {
+  addAttrForm.value = cloneObj(row) as Attr
+  // 变为编辑模式
+  showDisplayArea.value = false
 }
 </script>
 <style lang="scss" scoped></style>
