@@ -66,12 +66,10 @@ const $emit = defineEmits([
 ])
 
 const handleCurrentChange = () => {
-  //   currentPage.value = val
   $emit('paginationChange')
 }
 
 const handleSizeChange = () => {
-  //   pageSize.value = val
   $emit('paginationChange')
 }
 </script>
