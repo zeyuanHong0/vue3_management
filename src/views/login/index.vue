@@ -74,7 +74,7 @@ interface ILoginForm {
 
 const loginForm = reactive<ILoginForm>({
   username: 'admin',
-  password: 'atguigu123',
+  password: '111111',
 })
 const loading = ref<boolean>(false)
 const ruleFormRef = ref<FormInstance>() // 表单ref
